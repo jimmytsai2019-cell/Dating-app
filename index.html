@@ -1,25 +1,3 @@
-import base64
-import os
-from IPython.display import HTML
-from google.colab import files
-
-def get_base64_image(file_path):
-    try:
-        with open(file_path, 'rb') as f:
-            data = f.read()
-            ext = os.path.splitext(file_path)[1].lower()
-            mime_type = 'image/png' if ext == '.png' else 'image/jpeg'
-            return f'data:{mime_type};base64,{base64.b64encode(data).decode()}'
-    except Exception as e:
-        print(f"Error reading image file {file_path}: {e}")
-        return ''
-
-# 圖片路徑載入
-img1 = get_base64_image('/content/FullSizeRender.jpeg')
-img2 = get_base64_image('/content/IMG_7924.jpeg')
-img3 = get_base64_image('/content/IMG_3734.jpeg')
-
-hTML_content = f"""
 <!DOCTYPE html>
 <html lang='zh-TW'>
 <head>
@@ -28,15 +6,15 @@ hTML_content = f"""
     <title>專屬於妳的約會邀請 ❤️</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
-        body {{
+        body {
             background: linear-gradient(135deg, #fff0f5 0%, #ffe3ec 100%);
             margin: 0;
             height: 100vh;
             overflow-x: hidden;
             overflow-y: auto;
             font-family: 'ZCOOL+KuaiLe', cursive, sans-serif;
-        }}
-        .bubble {{
+        }
+        .bubble {
             position: absolute;
             bottom: -100px;
             background: rgba(255, 182, 193, 0.4);
@@ -45,13 +23,13 @@ hTML_content = f"""
             z-index: 1;
             animation: rise 10s infinite ease-in;
             pointer-events: none;
-        }}
-        @keyframes rise {{
-            0% {{ bottom: -100px; transform: translateX(0); }}
-            50% {{ transform: translateX(50px); }}
-            100% {{ bottom: 100vh; transform: translateX(-50px); }}
-        }}
-        .container {{
+        }
+        @keyframes rise {
+            0% { bottom: -100px; transform: translateX(0); }
+            50% { transform: translateX(50px); }
+            100% { bottom: 100vh; transform: translateX(-50px); }
+        }
+        .container {
             position: relative;
             text-align: center;
             padding-top: 5vh;
@@ -59,16 +37,16 @@ hTML_content = f"""
             width: 90%;
             max-width: 600px;
             margin: 0 auto;
-        }}
-        .btn-container {{
+        }
+        .btn-container {
             position: relative;
             z-index: 200;
             margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }}
-        .date-img {{
+        }
+        .date-img {
             max-width: 95%;
             max-height: 40vh;
             object-fit: contain;
@@ -76,18 +54,18 @@ hTML_content = f"""
             margin-bottom: 20px;
             box-shadow: 0 10px 25px rgba(255,105,180,0.3);
             border: 6px solid white;
-        }}
-        h1 {{
+        }
+        h1 {
             color: #d63384;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
             font-size: min(40px, 10vw);
-        }}
-        h2 {{
+        }
+        h2 {
             color: #d63384;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
             font-size: min(32px, 8vw);
-        }}
-        button {{
+        }
+        button {
             padding: 15px 35px;
             cursor: pointer;
             border: none;
@@ -97,35 +75,35 @@ hTML_content = f"""
             box-shadow: 0 5px 15px rgba(214,51,132,0.2);
             position: relative;
             z-index: 300;
-        }}
-        #yesBtn {{
+        }
+        #yesBtn {
             background-color: #ff85a2;
             color: white;
             font-size: 22px;
             margin: 5px;
-        }}
-        #noBtn {{
+        }
+        #noBtn {
             background-color: #ffffff;
             color: #ff85a2;
             font-size: 18px;
             border: 1px solid #ffccd5;
             margin: 5px;
-        }}
-        .option-btn {{
+        }
+        .option-btn {
             background-color: white;
             color: #ff85a2;
             border: 2px solid #ffccd5;
             margin: 10px;
             min-width: 180px;
             font-size: 18px;
-        }}
-        .option-btn.selected {{
+        }
+        .option-btn.selected {
             background-color: #ffccd5;
             color: #d63384;
             transform: scale(1.1);
             box-shadow: 0 0 15px #ff85a2;
-        }}
-        .action-btn {{
+        }
+        .action-btn {
             background-color: #ff4d6d;
             color: white;
             font-size: 24px;
@@ -135,10 +113,10 @@ hTML_content = f"""
             margin-left: auto;
             margin-right: auto;
             width: fit-content;
-        }}
-        #page2, #pageMovie, #pageFinal {{
+        }
+        #page2, #pageMovie, #pageFinal {
             display: none;
-        }}
+        }
     </style>
 </head>
 <body>
@@ -147,7 +125,8 @@ hTML_content = f"""
     <div class='bubble' style='width:90px;height:90px;left:85%;animation-duration:15s;'></div>
 
     <div id='page1' class='container'>
-        <img src='{img1}' class='date-img'>
+        <!-- 這裡可以直接放圖片網址，或改成你上傳到 GitHub 的圖片路徑 -->
+        <img src='https://via.placeholder.com/400x300' class='date-img'>
         <h1>妳願意跟我去約會嗎？ ❤️</h1>
         <div class='btn-container'>
             <button id='yesBtn' onclick='goToPage2()'>願意！✨</button>
@@ -156,7 +135,7 @@ hTML_content = f"""
     </div>
 
     <div id='page2' class='container'>
-        <img src='{img3}' class='date-img'>
+        <img src='https://via.placeholder.com/400x300' class='date-img'>
         <h1>范姜醬想去哪玩呢？ 🥰</h1>
         <div class='btn-container'>
             <button class='option-btn' onclick='selectPlace(this, "看電影")'>🎬 看電影</button>
@@ -176,7 +155,7 @@ hTML_content = f"""
     </div>
 
     <div id='pageFinal' class='container'>
-        <img src='{img2}' class='date-img'>
+        <img src='https://via.placeholder.com/400x300' class='date-img'>
         <h1>期待明天的約會 ❤️</h1>
         <h2 id='finalSelection'></h2>
     </div>
@@ -187,82 +166,75 @@ hTML_content = f"""
         let selectedMovie = '';
         const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwrobY-oifK0mA4z8boU7hRWgiVeSuFsjRpwsvA96RFJK7Q92AogDp7s8nxXzpxZtedsQ/exec';
 
-        function shrink() {{
+        function shrink() {
             yesSize += 25;
             document.getElementById('yesBtn').style.fontSize = yesSize + 'px';
             let no = document.getElementById('noBtn');
             let curSize = parseInt(window.getComputedStyle(no).fontSize);
             if (curSize <= 6) no.style.display = 'none';
             else no.style.fontSize = (curSize - 2) + 'px';
-        }}
-        function goToPage2() {{
+        }
+        function goToPage2() {
             document.getElementById('page1').style.display = 'none';
             document.getElementById('page2').style.display = 'block';
-        }}
-        function selectPlace(btn, choice) {{
+        }
+        function selectPlace(btn, choice) {
             document.querySelectorAll('#page2 .option-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             selectedPlace = choice;
             document.getElementById('confirmPlaceBtn').style.display = 'block';
-        }}
-        function handlePlaceConfirm() {{
-            if (selectedPlace === '看電影') {{
+        }
+        function handlePlaceConfirm() {
+            if (selectedPlace === '看電影') {
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('pageMovie').style.display = 'block';
-            }} else {{
+            } else {
                 showFinal();
-            }}
-        }}
-        function selectMovie(btn, choice) {{
+            }
+        }
+        function selectMovie(btn, choice) {
             document.querySelectorAll('.movie-opt').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             selectedMovie = choice;
             document.getElementById('confirmMovieBtn').style.display = 'block';
-        }}
-        async function showFinal() {{
+        }
+        async function showFinal() {
             document.getElementById('page2').style.display = 'none';
             document.getElementById('pageMovie').style.display = 'none';
             document.getElementById('pageFinal').style.display = 'block';
             
             let msg = '';
-            if (selectedMovie) {{
+            if (selectedMovie) {
                 msg = '明天好萊塢見🎬';
-            }} else if (selectedPlace === '逛 IKEA') {{
+            } else if (selectedPlace === '逛 IKEA') {
                 msg = '明天去大睡特睡！';
-            }} else if (selectedPlace === '逛大稻埕') {{
+            } else if (selectedPlace === '逛大稻埕') {
                 msg = '小小商人去探險！';
-            }} else {{
+            } else {
                 msg = '目的地：' + selectedPlace;
-            }}
+            }
             document.getElementById('finalSelection').innerText = msg;
 
-            const dataToSend = {{
+            const dataToSend = {
                 selectedPlace: selectedPlace,
                 selectedMovie: selectedMovie
-            }};
+            };
 
             if (!APPS_SCRIPT_WEB_APP_URL) return;
 
-            try {{
-                await fetch(APPS_SCRIPT_WEB_APP_URL, {{
+            try {
+                await fetch(APPS_SCRIPT_WEB_APP_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     cache: 'no-cache',
-                    headers: {{ 'Content-Type': 'application/json' }},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(dataToSend)
-                }});
+                });
                 console.log('資料已發送到 Apps Script');
-            }} catch (error) {{
+            } catch (error) {
                 console.error('發送資料時發生錯誤:', error);
-            }}
-        }}
+            }
+        }
     </script>
 </body>
 </html>
-"""
-
-with open('index.html', 'w', encoding='utf-8') as f:
-    f.write(hTML_content)
-
-display(HTML(hTML_content))
-files.download('index.html')
