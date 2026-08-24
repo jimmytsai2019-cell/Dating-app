@@ -114,6 +114,8 @@
             margin-right: auto;
             width: fit-content;
         }
+
+        /* 預設只顯示 page1，其他頁面隱藏 */
         #page2, #pageMovie, #pageFinal {
             display: none;
         }
@@ -124,8 +126,8 @@
     <div class='bubble' style='width:70px;height:70px;left:35%;animation-duration:12s;'></div>
     <div class='bubble' style='width:90px;height:90px;left:85%;animation-duration:15s;'></div>
 
+    <!-- 第 1 頁 -->
     <div id='page1' class='container'>
-        <!-- 這裡可以直接放圖片網址，或改成你上傳到 GitHub 的圖片路徑 -->
         <img src='https://via.placeholder.com/400x300' class='date-img'>
         <h1>妳願意跟我去約會嗎？ ❤️</h1>
         <div class='btn-container'>
@@ -134,6 +136,7 @@
         </div>
     </div>
 
+    <!-- 第 2 頁 -->
     <div id='page2' class='container'>
         <img src='https://via.placeholder.com/400x300' class='date-img'>
         <h1>范姜醬想去哪玩呢？ 🥰</h1>
@@ -145,6 +148,7 @@
         <button id='confirmPlaceBtn' class='action-btn' onclick='handlePlaceConfirm()'>確定行程 ❤️</button>
     </div>
 
+    <!-- 電影選擇頁 -->
     <div id='pageMovie' class='container'>
         <h1>要看哪部電影呢？ 🎬</h1>
         <div class='btn-container'>
@@ -154,6 +158,7 @@
         <button id='confirmMovieBtn' class='action-btn' onclick='showFinal()'>確定電影 ❤️</button>
     </div>
 
+    <!-- 最終頁 -->
     <div id='pageFinal' class='container'>
         <img src='https://via.placeholder.com/400x300' class='date-img'>
         <h1>期待明天的約會 ❤️</h1>
@@ -174,16 +179,19 @@
             if (curSize <= 6) no.style.display = 'none';
             else no.style.fontSize = (curSize - 2) + 'px';
         }
+
         function goToPage2() {
             document.getElementById('page1').style.display = 'none';
             document.getElementById('page2').style.display = 'block';
         }
+
         function selectPlace(btn, choice) {
             document.querySelectorAll('#page2 .option-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             selectedPlace = choice;
             document.getElementById('confirmPlaceBtn').style.display = 'block';
         }
+
         function handlePlaceConfirm() {
             if (selectedPlace === '看電影') {
                 document.getElementById('page2').style.display = 'none';
@@ -192,13 +200,16 @@
                 showFinal();
             }
         }
+
         function selectMovie(btn, choice) {
             document.querySelectorAll('.movie-opt').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             selectedMovie = choice;
             document.getElementById('confirmMovieBtn').style.display = 'block';
         }
+
         async function showFinal() {
+            document.getElementById('page1').style.display = 'none';
             document.getElementById('page2').style.display = 'none';
             document.getElementById('pageMovie').style.display = 'none';
             document.getElementById('pageFinal').style.display = 'block';
