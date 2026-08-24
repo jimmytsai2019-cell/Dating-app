@@ -1,1 +1,289 @@
+import base64
+import os # Added import for os module
+from IPython.display import HTML
+from google.colab import files
 
+def get_base64_image(file_path):
+    try:
+        with open(file_path, 'rb') as f:
+            data = f.read()
+            # Determine MIME type based on file extension
+            ext = os.path.splitext(file_path)[1].lower()
+            if ext == '.png':
+                mime_type = 'image/png'
+            elif ext == '.jpg' or ext == '.jpeg':
+                mime_type = 'image/jpeg'
+            else:
+                mime_type = 'application/octet-stream' # Default or handle other types
+            return f'data:{mime_type};base64,{base64.b64encode(data).decode()}'
+    except Exception as e:
+        print(f"Error reading image file {file_path}: {e}")
+        return ''
+
+# ***請將下面的檔案路徑替換為您上傳的照片檔名！***
+# 例如：img1 = get_base64_image('/content/my_first_photo.png')
+img1 = get_base64_image('/content/FullSizeRender.jpeg') # 請替換為您第一張照片的路徑
+img2 = get_base64_image('/content/IMG_7924.jpeg') # 請替換為您第二張照片的路徑
+img3 = get_base64_image('/content/IMG_3734.jpeg') # 新增的第三張照片 for page2
+
+# SKZOO Leebit 裝飾圖片網址 (已移除，因為使用者要求移除小裝飾圖片)
+bunny_url = "https://stickershop.line-scdn.net/stickershop/v1/product/14545239/LINEStorePC/main.png"
+
+hTML_content = f"""
+<!DOCTYPE html>
+<html lang='zh-TW'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>專屬於妳的約會邀請 ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+        body {{
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe3ec 100%);
+            margin: 0;
+            height: 100vh; /* Keep for initial visual, but overflow-y will handle content */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            overflow-y: auto;   /* Allow vertical scrolling */
+            font-family: 'ZCOOL+KuaiLe', cursive, sans-serif;
+        }}
+
+        /* 裝飾元素設定為不可點擊，避免遮擋按鈕 */
+        .bubble {{
+            position: absolute;
+            bottom: -100px;
+            background: rgba(255, 182, 193, 0.4);
+            border-radius: 50%;
+            opacity: 0.6;
+            z-index: 1;
+            animation: rise 10s infinite ease-in;
+            pointer-events: none;
+        }}
+
+        @keyframes rise {{
+            0% {{ bottom: -100px; transform: translateX(0); }}
+            50% {{ transform: translateX(50px); }}
+            100% {{ bottom: 100vh; transform: translateX(-50px); }}
+        }}
+
+        .container {{
+            position: relative;
+            text-align: center;
+            padding-top: 5vh; /* Responsive padding */
+            z-index: 100;
+            width: 90%;      /* More width on small screens */
+            max-width: 600px; /* Constrain on large screens */
+            margin: 0 auto;  /* Center the container */
+        }}
+        .btn-container {{
+            position: relative;
+            z-index: 200;
+            margin-top: 20px;
+            display: flex;             /* Changed to flex for stacking options */
+            flex-direction: column;    /* Stack items vertically */
+            align-items: center;       /* Center items horizontally */
+        }}
+        .date-img {{
+            max-width: 95%; /* Make images larger */
+            max-height: 40vh; /* Restrict max height to 40% of viewport height */
+            object-fit: contain; /* Ensure image scales down without cropping */
+            border-radius: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(255,105,180,0.3);
+            border: 6px solid white;
+        }}
+        /* Removed .bunny-decor, .bunny-left, .bunny-right CSS rules */
+
+        h1 {{
+            color: #d63384;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            font-size: min(40px, 10vw); /* Responsive h1 font size */
+        }}
+        h2 {{
+            color: #d63384;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            font-size: min(32px, 8vw);  /* Responsive h2 font size */
+        }}
+
+        button {{
+            padding: 15px 35px;
+            cursor: pointer;
+            border: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(214,51,132,0.2);
+            position: relative;
+            z-index: 300; /* 確保按鈕在最前方 */
+        }}
+
+        #yesBtn {{
+            background-color: #ff85a2;
+            color: white;
+            font-size: 22px;
+            margin: 5px;
+        }}
+        #noBtn {{
+            background-color: #ffffff;
+            color: #ff85a2;
+            font-size: 18px;
+            border: 1px solid #ffccd5;
+            margin: 5px;
+        }}
+        .option-btn {{
+            background-color: white;
+            color: #ff85a2;
+            border: 2px solid #ffccd5;
+            margin: 10px; /* Kept margin for spacing between stacked buttons */
+            min-width: 180px;
+            font-size: 18px;
+        }}
+        .option-btn.selected {{
+            background-color: #ffccd5;
+            color: #d63384;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #ff85a2;
+        }}
+        .action-btn {{
+            background-color: #ff4d6d;
+            color: white;
+            font-size: 24px;
+            margin-top: 30px;
+            display: none;
+            padding: 20px 60px;
+            margin-left: auto;  /* Centering the button */
+            margin-right: auto; /* Centering the button */
+            width: fit-content; /* Ensure button takes only necessary width for centering */
+        }}
+        #page2, #pageMovie, #pageFinal {{
+ display: none; }}
+    </style>
+</head>
+<body>
+    <div class='bubble' style='width:40px;height:40px;left:15%;animation-duration:8s;'></div>
+    <div class='bubble' style='width:70px;height:70px;left:35%;animation-duration:12s;'></div>
+    <div class='bubble' style='width:90px;height:90px;left:85%;animation-duration:15s;'></div>
+
+    <div id='page1' class='container'>
+        <img src='{img1}' class='date-img'>
+        <h1>妳願意跟我去約會嗎？ ❤️</h1>
+        <div class='btn-container'>
+            <button id='yesBtn' onclick='goToPage2()'>願意！✨</button>
+            <button id='noBtn' onclick='shrink()'>不要</button>
+        </div>
+    </div>
+
+    <div id='page2' class='container'>
+        <img src='{img3}' class='date-img'> <!-- 新增的照片 -->
+        <h1>范姜醬想去哪玩呢？ 🥰</h1>
+        <div class='btn-container'>
+            <button class='option-btn' onclick='selectPlace(this, "看電影")'>🎬 看電影</button>
+            <button class='option-btn' onclick='selectPlace(this, "逛大稻埕")'>🛍️ 逛大稻埕</button>
+            <button class='option-btn' onclick='selectPlace(this, "逛 IKEA")'>🇸🇪 逛 IKEA</button>
+        </div>
+        <button id='confirmPlaceBtn' class='action-btn' onclick='handlePlaceConfirm()'>確定行程 ❤️</button>
+    </div>
+
+    <div id='pageMovie' class='container'>
+        <h1>要看哪部電影呢？ 🎬</h1>
+        <div class='btn-container'>
+            <button class='option-btn movie-opt' onclick='selectMovie(this, "愛你至死不渝")'>❤️ 愛你至死不渝</button>
+            <button class='option-btn movie-opt' onclick='selectMovie(this, "小小兵大怪獸")'>🍌 小小兵大怪獸</button>
+        </div>
+        <button id='confirmMovieBtn' class='action-btn' onclick='showFinal()'>確定電影 ❤️</button>
+    </div>
+
+    <div id='pageFinal' class='container'>
+        <img src='{img2}' class='date-img'>
+        <h1>期待明天的約會 ❤️</h1>
+        <h2 id='finalSelection'></h2>
+    </div>
+
+    <script>
+        let yesSize = 22; let selectedPlace = ''; let selectedMovie = '';
+        const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwrobY-oifK0mA4z8boU7hRWgiVeSuFsjRpwsvA96RFJK7Q92AogDp7s8nxXzpxZtedsQ/exec'; // <<< 請替換為您的 Apps Script 網址 >>>
+
+        function shrink() {{
+            yesSize += 25;
+            document.getElementById('yesBtn').style.fontSize = yesSize + 'px';
+            let no = document.getElementById('noBtn');
+            let curSize = parseInt(window.getComputedStyle(no).fontSize);
+            if (curSize <= 6) no.style.display = 'none';
+            else no.style.fontSize = (curSize - 2) + 'px';
+        }}
+        function goToPage2() {{
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'block';
+        }}
+        function selectPlace(btn, choice) {{
+            document.querySelectorAll('#page2 .option-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedPlace = choice;
+            document.getElementById('confirmPlaceBtn').style.display = 'block';
+        }}
+        function handlePlaceConfirm() {{
+            if (selectedPlace === '看電影') {{
+                document.getElementById('page2').style.display = 'none';
+                document.getElementById('pageMovie').style.display = 'block';
+            }} else showFinal();
+        }}
+        function selectMovie(btn, choice) {{
+            document.querySelectorAll('.movie-opt').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedMovie = choice;
+            document.getElementById('confirmMovieBtn').style.display = 'block';
+        }}
+        async function showFinal() {{
+            document.getElementById('page2').style.display = 'none';
+            document.getElementById('pageMovie').style.display = 'none';
+            document.getElementById('pageFinal').style.display = 'block';
+            let msg = '';
+            if (selectedMovie) {{
+                msg = '明天好萊塢見🎬';
+            }}
+             else if (selectedPlace === '逛 IKEA') {{
+                msg = '明天去大睡特睡！';
+            }} else if (selectedPlace === '逛大稻埕') {{
+                msg = '小小商人去探險！';
+            }} else {{
+                msg = '目的地：' + selectedPlace;
+            }}
+            document.getElementById('finalSelection').innerText = msg;
+
+            // --- 新增的資料傳送邏輯 --- START ---
+            const dataToSend = {{
+                selectedPlace: selectedPlace,
+                selectedMovie: selectedMovie // 如果沒有選擇電影，這會是空字串
+            }};
+
+            // 檢查 Apps Script URL 是否已經設置，避免發送給空的網址
+            if (APPS_SCRIPT_WEB_APP_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL' || !APPS_SCRIPT_WEB_APP_URL) {{
+                console.warn('Apps Script Web App URL 尚未設定。請替換 YOUR_APPS_SCRIPT_WEB_APP_URL 為您的實際網址。');
+                return; // 不發送資料
+            }}
+
+            try {{
+                const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {{
+                    method: 'POST',
+                    mode: 'no-cors', // 處理 CORS 問題，因為 Apps Script 通常會拒絕來自不同域的請求
+                    cache: 'no-cache',
+                    headers: {{
+                        'Content-Type': 'application/json'
+                    }},
+                    body: JSON.stringify(dataToSend)
+                }});
+                console.log('資料已發送到 Apps Script', response);
+            }} catch (error) {{
+                console.error('發送資料到 Apps Script 時發生錯誤:', error);
+            }}
+            // --- 新增的資料傳送邏輯 --- END ---
+        }}
+    </script>
+</body>
+</html>
+"""
+
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(hTML_content)
+
+display(HTML(hTML_content))
+files.download('index.html')
