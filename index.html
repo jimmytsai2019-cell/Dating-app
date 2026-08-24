@@ -1,5 +1,5 @@
 import base64
-import os # Added import for os module
+import os
 from IPython.display import HTML
 from google.colab import files
 
@@ -7,27 +7,17 @@ def get_base64_image(file_path):
     try:
         with open(file_path, 'rb') as f:
             data = f.read()
-            # Determine MIME type based on file extension
             ext = os.path.splitext(file_path)[1].lower()
-            if ext == '.png':
-                mime_type = 'image/png'
-            elif ext == '.jpg' or ext == '.jpeg':
-                mime_type = 'image/jpeg'
-            else:
-                mime_type = 'application/octet-stream' # Default or handle other types
+            mime_type = 'image/png' if ext == '.png' else 'image/jpeg'
             return f'data:{mime_type};base64,{base64.b64encode(data).decode()}'
     except Exception as e:
         print(f"Error reading image file {file_path}: {e}")
         return ''
 
-# ***請將下面的檔案路徑替換為您上傳的照片檔名！***
-# 例如：img1 = get_base64_image('/content/my_first_photo.png')
-img1 = get_base64_image('/content/FullSizeRender.jpeg') # 請替換為您第一張照片的路徑
-img2 = get_base64_image('/content/IMG_7924.jpeg') # 請替換為您第二張照片的路徑
-img3 = get_base64_image('/content/IMG_3734.jpeg') # 新增的第三張照片 for page2
-
-# SKZOO Leebit 裝飾圖片網址 (已移除，因為使用者要求移除小裝飾圖片)
-bunny_url = "https://stickershop.line-scdn.net/stickershop/v1/product/14545239/LINEStorePC/main.png"
+# 圖片路徑載入
+img1 = get_base64_image('/content/FullSizeRender.jpeg')
+img2 = get_base64_image('/content/IMG_7924.jpeg')
+img3 = get_base64_image('/content/IMG_3734.jpeg')
 
 hTML_content = f"""
 <!DOCTYPE html>
@@ -41,13 +31,11 @@ hTML_content = f"""
         body {{
             background: linear-gradient(135deg, #fff0f5 0%, #ffe3ec 100%);
             margin: 0;
-            height: 100vh; /* Keep for initial visual, but overflow-y will handle content */
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-            overflow-y: auto;   /* Allow vertical scrolling */
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
             font-family: 'ZCOOL+KuaiLe', cursive, sans-serif;
         }}
-
-        /* 裝飾元素設定為不可點擊，避免遮擋按鈕 */
         .bubble {{
             position: absolute;
             bottom: -100px;
@@ -58,52 +46,47 @@ hTML_content = f"""
             animation: rise 10s infinite ease-in;
             pointer-events: none;
         }}
-
         @keyframes rise {{
             0% {{ bottom: -100px; transform: translateX(0); }}
             50% {{ transform: translateX(50px); }}
             100% {{ bottom: 100vh; transform: translateX(-50px); }}
         }}
-
         .container {{
             position: relative;
             text-align: center;
-            padding-top: 5vh; /* Responsive padding */
+            padding-top: 5vh;
             z-index: 100;
-            width: 90%;      /* More width on small screens */
-            max-width: 600px; /* Constrain on large screens */
-            margin: 0 auto;  /* Center the container */
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
         }}
         .btn-container {{
             position: relative;
             z-index: 200;
             margin-top: 20px;
-            display: flex;             /* Changed to flex for stacking options */
-            flex-direction: column;    /* Stack items vertically */
-            align-items: center;       /* Center items horizontally */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }}
         .date-img {{
-            max-width: 95%; /* Make images larger */
-            max-height: 40vh; /* Restrict max height to 40% of viewport height */
-            object-fit: contain; /* Ensure image scales down without cropping */
+            max-width: 95%;
+            max-height: 40vh;
+            object-fit: contain;
             border-radius: 30px;
             margin-bottom: 20px;
             box-shadow: 0 10px 25px rgba(255,105,180,0.3);
             border: 6px solid white;
         }}
-        /* Removed .bunny-decor, .bunny-left, .bunny-right CSS rules */
-
         h1 {{
             color: #d63384;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
-            font-size: min(40px, 10vw); /* Responsive h1 font size */
+            font-size: min(40px, 10vw);
         }}
         h2 {{
             color: #d63384;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
-            font-size: min(32px, 8vw);  /* Responsive h2 font size */
+            font-size: min(32px, 8vw);
         }}
-
         button {{
             padding: 15px 35px;
             cursor: pointer;
@@ -113,9 +96,8 @@ hTML_content = f"""
             font-weight: bold;
             box-shadow: 0 5px 15px rgba(214,51,132,0.2);
             position: relative;
-            z-index: 300; /* 確保按鈕在最前方 */
+            z-index: 300;
         }}
-
         #yesBtn {{
             background-color: #ff85a2;
             color: white;
@@ -133,7 +115,7 @@ hTML_content = f"""
             background-color: white;
             color: #ff85a2;
             border: 2px solid #ffccd5;
-            margin: 10px; /* Kept margin for spacing between stacked buttons */
+            margin: 10px;
             min-width: 180px;
             font-size: 18px;
         }}
@@ -150,12 +132,13 @@ hTML_content = f"""
             margin-top: 30px;
             display: none;
             padding: 20px 60px;
-            margin-left: auto;  /* Centering the button */
-            margin-right: auto; /* Centering the button */
-            width: fit-content; /* Ensure button takes only necessary width for centering */
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
         }}
         #page2, #pageMovie, #pageFinal {{
- display: none; }}
+            display: none;
+        }}
     </style>
 </head>
 <body>
@@ -173,7 +156,7 @@ hTML_content = f"""
     </div>
 
     <div id='page2' class='container'>
-        <img src='{img3}' class='date-img'> <!-- 新增的照片 -->
+        <img src='{img3}' class='date-img'>
         <h1>范姜醬想去哪玩呢？ 🥰</h1>
         <div class='btn-container'>
             <button class='option-btn' onclick='selectPlace(this, "看電影")'>🎬 看電影</button>
@@ -199,8 +182,10 @@ hTML_content = f"""
     </div>
 
     <script>
-        let yesSize = 22; let selectedPlace = ''; let selectedMovie = '';
-        const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwrobY-oifK0mA4z8boU7hRWgiVeSuFsjRpwsvA96RFJK7Q92AogDp7s8nxXzpxZtedsQ/exec'; // <<< 請替換為您的 Apps Script 網址 >>>
+        let yesSize = 22; 
+        let selectedPlace = ''; 
+        let selectedMovie = '';
+        const APPS_SCRIPT_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwrobY-oifK0mA4z8boU7hRWgiVeSuFsjRpwsvA96RFJK7Q92AogDp7s8nxXzpxZtedsQ/exec';
 
         function shrink() {{
             yesSize += 25;
@@ -224,7 +209,9 @@ hTML_content = f"""
             if (selectedPlace === '看電影') {{
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('pageMovie').style.display = 'block';
-            }} else showFinal();
+            }} else {{
+                showFinal();
+            }}
         }}
         function selectMovie(btn, choice) {{
             document.querySelectorAll('.movie-opt').forEach(b => b.classList.remove('selected'));
@@ -236,11 +223,11 @@ hTML_content = f"""
             document.getElementById('page2').style.display = 'none';
             document.getElementById('pageMovie').style.display = 'none';
             document.getElementById('pageFinal').style.display = 'block';
+            
             let msg = '';
             if (selectedMovie) {{
                 msg = '明天好萊塢見🎬';
-            }}
-             else if (selectedPlace === '逛 IKEA') {{
+            }} else if (selectedPlace === '逛 IKEA') {{
                 msg = '明天去大睡特睡！';
             }} else if (selectedPlace === '逛大稻埕') {{
                 msg = '小小商人去探險！';
@@ -249,33 +236,25 @@ hTML_content = f"""
             }}
             document.getElementById('finalSelection').innerText = msg;
 
-            // --- 新增的資料傳送邏輯 --- START ---
             const dataToSend = {{
                 selectedPlace: selectedPlace,
-                selectedMovie: selectedMovie // 如果沒有選擇電影，這會是空字串
+                selectedMovie: selectedMovie
             }};
 
-            // 檢查 Apps Script URL 是否已經設置，避免發送給空的網址
-            if (APPS_SCRIPT_WEB_APP_URL === 'YOUR_APPS_SCRIPT_WEB_APP_URL' || !APPS_SCRIPT_WEB_APP_URL) {{
-                console.warn('Apps Script Web App URL 尚未設定。請替換 YOUR_APPS_SCRIPT_WEB_APP_URL 為您的實際網址。');
-                return; // 不發送資料
-            }}
+            if (!APPS_SCRIPT_WEB_APP_URL) return;
 
             try {{
-                const response = await fetch(APPS_SCRIPT_WEB_APP_URL, {{
+                await fetch(APPS_SCRIPT_WEB_APP_URL, {{
                     method: 'POST',
-                    mode: 'no-cors', // 處理 CORS 問題，因為 Apps Script 通常會拒絕來自不同域的請求
+                    mode: 'no-cors',
                     cache: 'no-cache',
-                    headers: {{
-                        'Content-Type': 'application/json'
-                    }},
+                    headers: {{ 'Content-Type': 'application/json' }},
                     body: JSON.stringify(dataToSend)
                 }});
-                console.log('資料已發送到 Apps Script', response);
+                console.log('資料已發送到 Apps Script');
             }} catch (error) {{
-                console.error('發送資料到 Apps Script 時發生錯誤:', error);
+                console.error('發送資料時發生錯誤:', error);
             }}
-            // --- 新增的資料傳送邏輯 --- END ---
         }}
     </script>
 </body>
